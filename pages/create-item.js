@@ -3,6 +3,9 @@ import { ethers } from 'ethers'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { useRouter } from 'next/router' 
 import Web3Modal from "web3modal"
+import Popup from 'reactjs-popup';
+import Head from 'next/head'
+import 'reactjs-popup/dist/index.css';
 
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
@@ -12,6 +15,7 @@ import {
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+import { messagePrefix } from '@ethersproject/hash'
 
 export default function CreateItem() {
   const [fileUrl, setFileUrl] = useState(null)
@@ -55,9 +59,18 @@ export default function CreateItem() {
     const connection = await web3Modal.connect()
     const provider = new ethers.providers.Web3Provider(connection)    
     const signer = provider.getSigner()
+    // console.log(signer.getAddress())
+    var signerAddr = await signer.getAddress();
+    console.log(`Signer address: ${signerAddr}`);
 
     /* next, create the item */
     let contract = new ethers.Contract(nftaddress, NFT.abi, signer)
+    if(await contract.isMember("0x987C8ABA89da7e98Cd2dd54d6b891984B450c0e6") == false){
+      await contract.addMember("0x987C8ABA89da7e98Cd2dd54d6b891984B450c0e6")
+    }
+    if(await contract.isMember(signerAddr) == false) {
+      window.alert("ban khong co quyen mint");
+    }
     let transaction = await contract.createToken(url)
     let tx = await transaction.wait()
     let event = tx.events[0]
@@ -103,7 +116,7 @@ export default function CreateItem() {
           fileUrl && (
             <img className="rounded mt-4" width="350" src={fileUrl} />
           )
-        }
+        }   
         <button onClick={createMarket} className="font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg">
           Create Digital Asset
         </button>

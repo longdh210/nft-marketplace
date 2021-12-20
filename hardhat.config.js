@@ -16,6 +16,10 @@ module.exports = {
     mainnet: {
       url: `https://polygon-mainnet.g.alchemy.com/v2/${projectId2}`,
       accounts: [privateKey]
+    },
+    testnet: {
+      url: `https://speedy-nodes-nyc.moralis.io/12c36cfbdd209707bb91d9a7/bsc/testnet`,
+      accounts: [privateKey]
     }
   },
   solidity: {
