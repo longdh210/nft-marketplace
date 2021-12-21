@@ -3,7 +3,6 @@ import { ethers } from 'ethers'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { useRouter } from 'next/router' 
 import Web3Modal from "web3modal"
-import 'reactjs-popup/dist/index.css';
 
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
@@ -17,7 +16,7 @@ import { messagePrefix } from '@ethersproject/hash'
 
 export default function CreateItem() {
   const [fileUrl, setFileUrl] = useState(null)
-  const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' })
+  const [formInput, updateFormInput] = useState({ price: '', name: '', description: '', address:''})
   const router = useRouter()
 
   async function onChange(e) {
@@ -63,11 +62,12 @@ export default function CreateItem() {
 
     /* next, create the item */
     let contract = new ethers.Contract(nftaddress, NFT.abi, signer)
-    if(await contract.isMember("0x987C8ABA89da7e98Cd2dd54d6b891984B450c0e6") == false){
-      await contract.addMember("0x987C8ABA89da7e98Cd2dd54d6b891984B450c0e6")
-    }
+    // if(await contract.isMember("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266") == false){
+    //   await contract.addMember("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
+    // }
     if(await contract.isMember(signerAddr) == false) {
       window.alert("ban khong co quyen mint");
+      return
     }
     let transaction = await contract.createToken(url)
     let tx = await transaction.wait()
@@ -85,10 +85,32 @@ export default function CreateItem() {
     await transaction.wait()
     router.push('/')
   }
+  
+  async function addToWhitelist(){
+    const { address } = formInput
+    const web3Modal = new Web3Modal()
+    const connection = await web3Modal.connect()
+    const provider = new ethers.providers.Web3Provider(connection)    
+    const signer = provider.getSigner()
+    let contract = new ethers.Contract(nftaddress, NFT.abi, signer)
+    if(!address) return
+    else if(await contract.isMember(`${address}`) == false){
+      await contract.addMember(`${address}`)
+      console.log(address)
+    }
+  }
 
   return (
     <div className="flex justify-center">
       <div className="w-1/2 flex flex-col pb-12">
+        <input 
+          placeholder="Address add to white list to test mint"
+          className="mt-8 border rounded p-4"
+          onChange={e => updateFormInput({ ...formInput, address: e.target.value })}
+        />
+        <button onClick={addToWhitelist} className="font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg">
+          Add to white list
+        </button>
         <input 
           placeholder="Asset Name"
           className="mt-8 border rounded p-4"

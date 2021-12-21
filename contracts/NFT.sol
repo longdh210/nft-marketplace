@@ -32,7 +32,6 @@ contract NFT is ERC721URIStorage, Ownable {
 
     function addMember(address _member)
         public
-        onlyOwner
     {
         require(
             !isMember(_member),
@@ -45,7 +44,6 @@ contract NFT is ERC721URIStorage, Ownable {
 
     function removeMember(address _member)
         public
-        onlyOwner
     {
         require(
             isMember(_member),

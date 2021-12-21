@@ -2,8 +2,6 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from "web3modal"
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
 
 import {
   nftaddress, nftmarketaddress
