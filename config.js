@@ -5,5 +5,5 @@
 // export const nftaddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
 // export const nftmarketaddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
 //bsc testnet
-export const nftaddress = "0x40648FE6F3d3b156D3daE8F4540558D3F73BCCEb"
-export const nftmarketaddress = "0x993296a178C507C5Ea4273EfBfc1C168e044d79B"
+export const nftaddress = "0x84f91980e41Fc2FD07A11Cc8Ac18764A5f8d49C3"
+export const nftmarketaddress = "0xD5FDcA63f57575b146557d003AB441EFAe5ea3e2"
