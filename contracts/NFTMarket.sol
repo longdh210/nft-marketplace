@@ -83,21 +83,21 @@ contract NFTMarket is ReentrancyGuard {
 
   /* Creates the sale of a marketplace item */
   /* Transfers ownership of the item, as well as funds between parties */
-  function createMarketSale(
-    address nftContract,
-    uint256 itemId
-    ) public payable nonReentrant {
-    uint price = idToMarketItem[itemId].price;
-    uint tokenId = idToMarketItem[itemId].tokenId;
-    require(msg.value == price, "Please submit the asking price in order to complete the purchase");
+    function createMarketSale(
+      address nftContract,
+      uint256 itemId
+      ) public payable nonReentrant {
+      uint price = idToMarketItem[itemId].price;
+      uint tokenId = idToMarketItem[itemId].tokenId;
+      require(msg.value >= price, "Please submit the asking price in order to complete the purchase");
 
-    idToMarketItem[itemId].seller.transfer(msg.value);
-    IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
-    idToMarketItem[itemId].owner = payable(msg.sender);
-    idToMarketItem[itemId].sold = true;
-    _itemsSold.increment();
-    payable(owner).transfer(listingPrice);
-  }
+      idToMarketItem[itemId].seller.transfer(msg.value);
+      IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
+      idToMarketItem[itemId].owner = payable(msg.sender);
+      idToMarketItem[itemId].sold = true;
+      _itemsSold.increment();
+      payable(owner).transfer(listingPrice);
+    }
 
   /* Returns all unsold market items */
   function fetchMarketItems() public view returns (MarketItem[] memory) {

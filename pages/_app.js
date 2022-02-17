@@ -27,6 +27,11 @@ function MyApp({ Component, pageProps }) {
               Creator Dashboard
             </a>
           </Link>
+          <Link href="/transfer">
+            <a className="mr-6 text-pink-500">
+              Transfer NFT
+            </a>
+          </Link>
         </div>
       </nav>
       <Component {...pageProps} />

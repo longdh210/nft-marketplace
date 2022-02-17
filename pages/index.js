@@ -18,7 +18,7 @@ export default function Home() {
   }, [])
   async function loadNFTs() {
     /* create a generic provider and query for unsold market items */
-    const provider = new ethers.providers.JsonRpcProvider('https://speedy-nodes-nyc.moralis.io/12c36cfbdd209707bb91d9a7/bsc/testnet')
+    const provider = new ethers.providers.JsonRpcProvider()
     const tokenContract = new ethers.Contract(nftaddress, NFT.abi, provider)
     const marketContract = new ethers.Contract(nftmarketaddress, Market.abi, provider)
     const data = await marketContract.fetchMarketItems()
@@ -33,7 +33,7 @@ export default function Home() {
       let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
       let item = {
         price,
-        tokenId: i.tokenId.toNumber(),
+        itemId: i.itemId.toNumber(),
         seller: i.seller,
         owner: i.owner,
         image: meta.data.image,
@@ -55,7 +55,7 @@ export default function Home() {
 
     /* user will be prompted to pay the asking proces to complete the transaction */
     const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')   
-    const transaction = await contract.createMarketSale(nftaddress, nft.tokenId, {
+    const transaction = await contract.createMarketSale(nftaddress, nft.itemId, {
       value: price
     })
     await transaction.wait()

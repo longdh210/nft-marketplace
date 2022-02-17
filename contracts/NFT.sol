@@ -16,52 +16,52 @@ contract NFT is ERC721URIStorage, Ownable {
     event MemberAdded(address member);
     event MemberRemoved(address member);
 
-    mapping (address => bool) members;
+    mapping(address => bool) members;
 
     constructor(address marketplaceAddress) ERC721("Metaverse", "METT") {
         contractAddress = marketplaceAddress;
     }
 
-    function isMember(address _member)
-        public
-        view
-        returns(bool)
-    {
+    function isMember(address _member) public view returns (bool) {
         return members[_member];
     }
 
-    function addMember(address _member)
-        public
-    {
-        require(
-            !isMember(_member),
-            "Address is member already."
-        );
+    function addMember(address _member) public {
+        require(!isMember(_member), "Address is member already.");
 
         members[_member] = true;
         emit MemberAdded(_member);
     }
 
-    function removeMember(address _member)
-        public
-    {
-        require(
-            isMember(_member),
-            "Not member of whitelist."
-        );
+    function removeMember(address _member) public {
+        require(isMember(_member), "Not member of whitelist.");
 
         delete members[_member];
         emit MemberRemoved(_member);
     }
 
-    function createToken(string memory tokenURI) public returns (uint) {
+    function createToken(string memory tokenURI) public returns (uint256) {
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
-        
+
         require(isMember(msg.sender), "Caller is not a member");
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
-        setApprovalForAll(contractAddress, true);
+        // approve(contractAddress, newItemId);
+        isApprovedForAll(msg.sender, contractAddress);
+        // setApprovalForAll(contractAddress, true);
         return newItemId;
+    }
+    function isApprovedForAll(address owner, address operator)
+        public
+        view
+        virtual
+        override
+        returns (bool)
+    {
+        // preapproved marketplace
+        return
+            super.isApprovedForAll(owner, operator) ||
+            operator == contractAddress;
     }
 }
