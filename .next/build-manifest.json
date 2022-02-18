@@ -15,11 +15,6 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
-    "/": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/index.js"
-    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -30,25 +25,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/create-item": [
+    "/displayNFT": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/create-item.js"
+      "static/chunks/pages/displayNFT.js"
     ],
-    "/creator-dashboard": [
+    "/mintNFT": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/creator-dashboard.js"
-    ],
-    "/my-assets": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/my-assets.js"
-    ],
-    "/transfer": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/transfer.js"
+      "static/chunks/pages/mintNFT.js"
     ]
   },
   "ampFirstPages": []

@@ -27,6 +27,16 @@ function MyApp({ Component, pageProps }) {
               Creator Dashboard
             </a>
           </Link>
+          <Link href="/mintNFT">
+            <a className="mr-6 text-pink-500">
+              Mint NFT
+            </a>
+          </Link>
+          <Link href="/displayNFT">
+            <a className="mr-6 text-pink-500">
+              Display NFT
+            </a>
+          </Link>
           <Link href="/transfer">
             <a className="mr-6 text-pink-500">
               Transfer NFT
